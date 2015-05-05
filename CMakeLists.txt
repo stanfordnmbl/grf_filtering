@@ -25,3 +25,8 @@ configure_file(ik_setup.xml "${CMAKE_BUILD_DIR}" COPYONLY)
 configure_file(ik_taskset.xml "${CMAKE_BUILD_DIR}" COPYONLY)
 configure_file(cmc_setup.xml "${CMAKE_BUILD_DIR}" COPYONLY)
 configure_file(cmc_tasks.xml "${CMAKE_BUILD_DIR}" COPYONLY)
+
+add_custom_command(OUTPUT ${CMAKE_BUILD_DIR}/ik_solution.sto
+    COMMAND ${OpenSim_ROOT_DIR}/bin/ik -S ik_setup.xml
+    )
+add_custom_target(ik DEPENDS ${CMAKE_BUILD_DIR}/ik_solution.sto)
