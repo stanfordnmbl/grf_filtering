@@ -20,3 +20,4 @@ add_executable(dynhop dynhop.cpp)
 target_link_libraries(dynhop "${OpenSim_LIBRARIES}")
 
 configure_file(dynhop.osim "${CMAKE_BUILD_DIR}" COPYONLY)
+configure_file(make_cmc_input.py "${CMAKE_BUILD_DIR}" COPYONLY)

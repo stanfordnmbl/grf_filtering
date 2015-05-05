@@ -425,7 +425,20 @@
 		</ForceSet>
 		<!--Markers in the model.-->
 		<MarkerSet>
-			<objects />
+            <objects>
+                <Marker name="Pelvis">
+                    <body>Pelvis</body>
+                    <location>0 0 0 </location>
+                </Marker>
+                <Marker name="LKnee">
+                    <body>LeftThigh</body>
+                    <location>0 -0.25 0 </location>
+                </Marker>
+                <Marker name="LFoot">
+                    <body>LeftShank</body>
+                    <location>0 -0.25 0 </location>
+                </Marker>
+            </objects>
 			<groups />
 		</MarkerSet>
 		<!--ContactGeometries  in the model.-->
