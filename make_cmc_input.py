@@ -1,6 +1,8 @@
 import numpy as np
+from scipy import interpolate
 import pylab as pl
-from perimysium.dataman import TRCFile, storage2numpy
+from perimysium.dataman import TRCFile, storage2numpy, dict2storage
+from collections import OrderedDict
 
 # Create motion capture data.
 # ===========================
@@ -34,6 +36,10 @@ trc_pelvis = interp(trc_time, t, pelvis)
 trc_knee = interp(trc_time, t, knee)
 trc_foot = interp(trc_time, t, foot)
 
+# Filter.
+# -------
+# TODO
+
 
 # Write out TRC file.
 # -------------------
@@ -61,6 +67,57 @@ add_marker(trc, "LFoot", trc_foot)
 trc.write("dynhop.trc")
 
 
+# Create external loads files.
+# ============================
+forces = storage2numpy('dynhop_forces_forces.sto')
+grf = OrderedDict()
+grf['time'] = forces['time']
+grf['ground_force_vx'] = -forces['LFootContactPlatformforceX']
+grf['ground_force_vy'] = -forces['LFootContactPlatformforceY']
+grf['ground_force_vz'] = -forces['LFootContactPlatformforceZ']
+grf['ground_torque_vx'] = -forces['LFootContactPlatformtorqueX']
+grf['ground_torque_vy'] = -forces['LFootContactPlatformtorqueY']
+grf['ground_torque_vz'] = -forces['LFootContactPlatformtorqueZ']
 
-# Create external loads file.
-# ===========================
+# Compute center of pressure.
+# ---------------------------
+# TODO choose a better interpolater; maybe a spline.
+# s = 0 means no smoothing.
+copx_spline = interpolate.splrep(t, foot[:, 0], s=0) 
+# der is order of derivative.
+copx = interpolate.splev(forces['time'], copx_spline, der=0)
+
+copy_spline = interpolate.splrep(t, foot[:, 1], s=0)
+copy = interpolate.splev(forces['time'], copy_spline, der=0)
+copz_spline = interpolate.splrep(t, foot[:, 2], s=0)
+copz = interpolate.splev(forces['time'], copz_spline, der=0)
+grf['ground_force_px'] = copx
+grf['ground_force_py'] = copy
+grf['ground_force_pz'] = copz
+
+# Convert to ndarray.
+# -------------------
+
+dict2storage(grf, 'ground_reaction.mot')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
