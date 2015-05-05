@@ -13,22 +13,23 @@ int main()
     forces->setName("forces");
     model.addAnalysis(forces);
 
-    /*
-    auto* pelviskin = new PointKinematics();
+    auto* pelviskin = new PointKinematics(&model);
     pelviskin->setName("pelviskin");
     pelviskin->setBodyPoint("Pelvis", Vec3(0));
+    pelviskin->setPointName("pelvis");
     model.addAnalysis(pelviskin);
 
-    auto* kneekin = new PointKinematics();
+    auto* kneekin = new PointKinematics(&model);
     kneekin->setName("kneekin");
-    kneekin->setBodyPoint("LThigh", Vec3(0, -0.25, 0));
+    kneekin->setBodyPoint("LeftThigh", Vec3(0, -0.25, 0));
+    kneekin->setPointName("knee");
     model.addAnalysis(kneekin);
 
-    auto* footkin = new PointKinematics();
+    auto* footkin = new PointKinematics(&model);
     footkin->setName("footkin");
-    footkin->setBodyPoint("LShank", Vec3(0, -0.25, 0));
+    footkin->setBodyPoint("LeftShank", Vec3(0, -0.25, 0));
+    footkin->setPointName("foot");
     model.addAnalysis(footkin);
-    */
 
     model.print("dynhop_fuddled.osim");
 
@@ -43,5 +44,8 @@ int main()
 
     manager.getStateStorage().print("dynhop_states.sto");
     model.updAnalysisSet().get("forces").printResults("dynhop");
+    model.updAnalysisSet().get("pelviskin").printResults("dynhop");
+    model.updAnalysisSet().get("kneekin").printResults("dynhop");
+    model.updAnalysisSet().get("footkin").printResults("dynhop");
 
 }
