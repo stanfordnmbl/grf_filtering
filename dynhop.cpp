@@ -31,8 +31,6 @@ int main()
     footkin->setPointName("foot");
     model.addAnalysis(footkin);
 
-    model.print("dynhop_fuddled.osim");
-
     SimTK::State state = model.initSystem();
 
     model.updMatterSubsystem().setShowDefaultGeometry(true);
@@ -47,5 +45,8 @@ int main()
     model.updAnalysisSet().get("pelviskin").printResults("dynhop");
     model.updAnalysisSet().get("kneekin").printResults("dynhop");
     model.updAnalysisSet().get("footkin").printResults("dynhop");
+
+    model.updForceSet().setSize(0);
+    model.print("dynhop_no_forces.osim");
 
 }

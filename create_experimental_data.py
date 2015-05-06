@@ -2,6 +2,7 @@ import numpy as np
 from scipy import interpolate
 import pylab as pl
 from perimysium.dataman import TRCFile, storage2numpy, dict2storage
+from perimysium.postprocessing import filter_critically_damped
 from collections import OrderedDict
 
 # Create motion capture data.
@@ -71,13 +72,42 @@ trc.write("dynhop.trc")
 # ============================
 forces = storage2numpy('dynhop_forces_forces.sto')
 grf = OrderedDict()
-grf['time'] = forces['time']
+
+# Negate.
+# -------
+grf_rate = 2000.
+grf['time'] = np.linspace(0, t_max, t_max * grf_rate)
 grf['ground_force_vx'] = -forces['LFootContactPlatformforceX']
 grf['ground_force_vy'] = -forces['LFootContactPlatformforceY']
 grf['ground_force_vz'] = -forces['LFootContactPlatformforceZ']
-grf['ground_torque_vx'] = -forces['LFootContactPlatformtorqueX']
-grf['ground_torque_vy'] = -forces['LFootContactPlatformtorqueY']
-grf['ground_torque_vz'] = -forces['LFootContactPlatformtorqueZ']
+grf['ground_torque_x'] = -forces['LFootContactPlatformtorqueX']
+grf['ground_torque_y'] = -forces['LFootContactPlatformtorqueY']
+grf['ground_torque_z'] = -forces['LFootContactPlatformtorqueZ']
+
+# Resample at a constant frequency.
+# ---------------------------------
+def resample(entry):
+    grf[entry] = np.interp(grf['time'], forces['time'], grf[entry])
+
+resample('ground_force_vx')
+resample('ground_force_vy')
+resample('ground_force_vz')
+resample('ground_torque_x')
+resample('ground_torque_y')
+resample('ground_torque_z')
+
+
+# Filter.
+# -------
+def filt(entry):
+    cutoff_frequency = 50
+    order = 2
+    grf[entry] = filter_critically_damped(grf[entry],
+            grf_rate, cutoff_frequency, order)
+
+filt('ground_force_vx')
+filt('ground_torque_z')
+
 
 # Compute center of pressure.
 # ---------------------------
@@ -85,12 +115,12 @@ grf['ground_torque_vz'] = -forces['LFootContactPlatformtorqueZ']
 # s = 0 means no smoothing.
 copx_spline = interpolate.splrep(t, foot[:, 0], s=0) 
 # der is order of derivative.
-copx = interpolate.splev(forces['time'], copx_spline, der=0)
+copx = interpolate.splev(grf['time'], copx_spline, der=0)
 
 copy_spline = interpolate.splrep(t, foot[:, 1], s=0)
-copy = interpolate.splev(forces['time'], copy_spline, der=0)
+copy = interpolate.splev(grf['time'], copy_spline, der=0)
 copz_spline = interpolate.splrep(t, foot[:, 2], s=0)
-copz = interpolate.splev(forces['time'], copz_spline, der=0)
+copz = interpolate.splev(grf['time'], copz_spline, der=0)
 grf['ground_force_px'] = copx
 grf['ground_force_py'] = copy
 grf['ground_force_pz'] = copz
