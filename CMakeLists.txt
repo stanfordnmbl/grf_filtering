@@ -28,6 +28,7 @@ configure_file(cmc_setup.xml "${CMAKE_BUILD_DIR}" COPYONLY)
 configure_file(cmc_tasks.xml "${CMAKE_BUILD_DIR}" COPYONLY)
 configure_file(cmc_actuators.xml "${CMAKE_BUILD_DIR}" COPYONLY)
 configure_file(external_loads.xml "${CMAKE_BUILD_DIR}" COPYONLY)
+configure_file(rra_setup.xml "${CMAKE_BUILD_DIR}" COPYONLY)
 
 add_custom_command(OUTPUT ${CMAKE_BUILD_DIR}/ik_solution.mot
     COMMAND ${OpenSim_ROOT_DIR}/bin/ik -S ik_setup.xml
@@ -43,3 +44,8 @@ add_custom_command(OUTPUT ${CMAKE_BUILD_DIR}/results/dynhop_cmc_states.sto
     COMMAND ${OpenSim_ROOT_DIR}/bin/cmc -S cmc_setup.xml
     )
 add_custom_target(cmc DEPENDS ${CMAKE_BUILD_DIR}/results/dynhop_cmc_states.sto)
+
+add_custom_command(OUTPUT ${CMAKE_BUILD_DIR}/results/dynhop_rra_states.sto
+    COMMAND ${OpenSim_ROOT_DIR}/bin/rra -S rra_setup.xml
+    )
+add_custom_target(rra DEPENDS ${CMAKE_BUILD_DIR}/results/dynhop_rra_states.sto)
