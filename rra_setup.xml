@@ -2,7 +2,7 @@
 <OpenSimDocument Version="30000">
 	<RRATool name="dynhop_rra">
 		<!--Name of the .osim file used to construct a model.-->
-        <model_file>dynhop_no_forces.osim</model_file>
+        <model_file>dynhop.osim</model_file>
 		<!--Replace the model's force set with sets specified in <force_set_files>? If false, the force set is appended to.-->
 		<replace_force_set>true</replace_force_set>
 		<!--List of xml files used to construct an force set for the model.-->
@@ -14,7 +14,7 @@
 		<!--Initial time for the simulation.-->
 		<initial_time>0</initial_time>
 		<!--Final time for the simulation.-->
-		<final_time>0</final_time>
+		<final_time>1</final_time>
 		<!--Flag indicating whether or not to compute equilibrium values for states other than the coordinates or speeds.  For example, equilibrium muscle fiber lengths or muscle forces.-->
 		<solve_for_equilibrium_for_auxiliary_states>false</solve_for_equilibrium_for_auxiliary_states>
 		<!--Maximum number of integrator steps.-->
