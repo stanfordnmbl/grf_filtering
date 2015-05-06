@@ -21,12 +21,25 @@ target_link_libraries(dynhop "${OpenSim_LIBRARIES}")
 
 configure_file(dynhop.osim "${CMAKE_BUILD_DIR}" COPYONLY)
 configure_file(create_experimental_data.py "${CMAKE_BUILD_DIR}" COPYONLY)
+configure_file(id_setup.xml "${CMAKE_BUILD_DIR}" COPYONLY)
 configure_file(ik_setup.xml "${CMAKE_BUILD_DIR}" COPYONLY)
 configure_file(ik_taskset.xml "${CMAKE_BUILD_DIR}" COPYONLY)
 configure_file(cmc_setup.xml "${CMAKE_BUILD_DIR}" COPYONLY)
 configure_file(cmc_tasks.xml "${CMAKE_BUILD_DIR}" COPYONLY)
+configure_file(cmc_actuators.xml "${CMAKE_BUILD_DIR}" COPYONLY)
+configure_file(external_loads.xml "${CMAKE_BUILD_DIR}" COPYONLY)
 
-add_custom_command(OUTPUT ${CMAKE_BUILD_DIR}/ik_solution.sto
+add_custom_command(OUTPUT ${CMAKE_BUILD_DIR}/ik_solution.mot
     COMMAND ${OpenSim_ROOT_DIR}/bin/ik -S ik_setup.xml
     )
-add_custom_target(ik DEPENDS ${CMAKE_BUILD_DIR}/ik_solution.sto)
+add_custom_target(ik DEPENDS ${CMAKE_BUILD_DIR}/ik_solution.mot)
+
+add_custom_command(OUTPUT ${CMAKE_BUILD_DIR}/id_solution.mot
+    COMMAND ${OpenSim_ROOT_DIR}/bin/id -S id_setup.xml
+    )
+add_custom_target(id DEPENDS ${CMAKE_BUILD_DIR}/id_solution.mot)
+
+add_custom_command(OUTPUT ${CMAKE_BUILD_DIR}/results/dynhop_cmc_states.sto
+    COMMAND ${OpenSim_ROOT_DIR}/bin/cmc -S cmc_setup.xml
+    )
+add_custom_target(cmc DEPENDS ${CMAKE_BUILD_DIR}/results/dynhop_cmc_states.sto)

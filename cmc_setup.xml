@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <OpenSimDocument Version="30000">
-	<CMCTool name="loadedwalking_NAME_cmc">
+	<CMCTool name="dynhop_cmc">
 		<!--Name of the .osim file used to construct a model.-->
-		<model_file>MODEL</model_file>
+		<model_file>dynhop.osim</model_file>
 		<!--Replace the model's force set with sets specified in <force_set_files>? If false, the force set is appended to.-->
-		<replace_force_set>false</replace_force_set>
+		<replace_force_set>true</replace_force_set>
 		<!--List of xml files used to construct an force set for the model.-->
-        <force_set_files>FORCESETFILES</force_set_files>
+        <force_set_files>cmc_actuators.xml</force_set_files>
 		<!--Directory used for writing results.-->
 		<results_directory>results</results_directory>
 		<!--Output precision.  It is 8 by default.-->
 		<output_precision>8</output_precision>
 		<!--Initial time for the simulation.-->
-		<initial_time>INITTIME</initial_time>
+		<initial_time>0</initial_time>
 		<!--Final time for the simulation.-->
-		<final_time>FINALTIME</final_time>
+		<final_time>1</final_time>
 		<!--Flag indicating whether or not to compute equilibrium values for states other than the coordinates or speeds.  For example, equilibrium muscle fiber lengths or muscle forces.-->
 		<solve_for_equilibrium_for_auxiliary_states>true</solve_for_equilibrium_for_auxiliary_states>
 		<!--Maximum number of integrator steps.-->
@@ -27,20 +27,7 @@
 		<integrator_error_tolerance>1e-005</integrator_error_tolerance>
 		<!--Set of analyses to be run during the investigation.-->
 		<AnalysisSet name="Analyses">
-			<objects>
-				<ProbeReporter name="ProbeReporter">
-					<!--Flag (true or false) specifying whether whether on. True by default.-->
-					<on>true</on>
-					<!--Start time.-->
-					<start_time>-Inf</start_time>
-					<!--End time.-->
-					<end_time>Inf</end_time>
-					<!--Specifies how often to store results during a simulation. More specifically, the interval (a positive integer) specifies how many successful integration steps should be taken before results are recorded again.-->
-					<step_interval>10</step_interval>
-					<!--Flag (true or false) indicating whether the results are in degrees or not.-->
-					<in_degrees>true</in_degrees>
-				</ProbeReporter>
-            </objects>
+            <objects />
 			<groups />
 		</AnalysisSet>
 		<!--Controller objects in the model.-->
@@ -53,11 +40,11 @@
 		<!--Motion (.mot) or storage (.sto) file containing the desired point trajectories.-->
 		<desired_points_file />
 		<!--Motion (.mot) or storage (.sto) file containing the desired kinematic trajectories.-->
-        <desired_kinematics_file>../rratasks/results/loadedwalking_NAME_rratasks_Kinematics_q.sto</desired_kinematics_file>
+        <desired_kinematics_file>ik_solution.mot</desired_kinematics_file>
 		<!--File containing the tracking tasks. Which coordinates are tracked and with what weights are specified here.-->
-		<task_set_file>tasks.xml</task_set_file>
+		<task_set_file>cmc_tasks.xml</task_set_file>
 		<!--File containing the constraints on the controls.-->
-		<constraints_file>CONTROLCONSTRAINTS</constraints_file>
+        <constraints_file></constraints_file>
 		<!--File containing the controls output by RRA. These can be used to place constraints on the residuals during CMC.-->
 		<rra_controls_file />
 		<!--Low-pass cut-off frequency for filtering the desired kinematics. A negative value results in no filtering. The default value is -1.0, so no filtering.-->
