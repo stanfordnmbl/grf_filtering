@@ -19,9 +19,13 @@ link_directories("${OpenSim_LIB_DIR}")
 add_executable(dynhop dynhop.cpp)
 target_link_libraries(dynhop "${OpenSim_LIBRARIES}")
 
+add_executable(invdyn invdyn.cpp)
+target_link_libraries(invdyn "${OpenSim_LIBRARIES}")
+
 configure_file(dynhop.osim "${CMAKE_BINARY_DIR}" COPYONLY)
 configure_file(create_experimental_data.py "${CMAKE_BINARY_DIR}" COPYONLY)
 configure_file(id_setup.xml "${CMAKE_BINARY_DIR}" COPYONLY)
+configure_file(invdyn_setup.xml "${CMAKE_BINARY_DIR}" COPYONLY)
 configure_file(ik_setup.xml "${CMAKE_BINARY_DIR}" COPYONLY)
 configure_file(ik_taskset.xml "${CMAKE_BINARY_DIR}" COPYONLY)
 configure_file(cmc_setup.xml "${CMAKE_BINARY_DIR}" COPYONLY)
