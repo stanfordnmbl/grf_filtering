@@ -36,6 +36,7 @@ int main()
     model.updMatterSubsystem().setShowDefaultGeometry(true);
 
     RungeKuttaMersonIntegrator integrator(model.getMultibodySystem());
+    integrator.setAccuracy(1e-6);
     Manager manager(model, integrator);
     manager.setInitialTime(0); manager.setFinalTime(1.0);
     manager.integrate(state);

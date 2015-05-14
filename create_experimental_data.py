@@ -1,3 +1,4 @@
+import os
 import numpy as np
 from scipy import interpolate
 import pylab as pl
@@ -77,12 +78,12 @@ grf = OrderedDict()
 # -------
 grf_rate = 2000.
 grf['time'] = np.linspace(0, t_max, t_max * grf_rate)
-grf['ground_force_vx'] = -forces['LFootContactPlatformforceX']
-grf['ground_force_vy'] = -forces['LFootContactPlatformforceY']
-grf['ground_force_vz'] = -forces['LFootContactPlatformforceZ']
-grf['ground_torque_x'] = -forces['LFootContactPlatformtorqueX']
-grf['ground_torque_y'] = -forces['LFootContactPlatformtorqueY']
-grf['ground_torque_z'] = -forces['LFootContactPlatformtorqueZ']
+grf['ground_force_vx'] = forces['LFootContactLeftShankforceX']
+grf['ground_force_vy'] = forces['LFootContactLeftShankforceY']
+grf['ground_force_vz'] = forces['LFootContactLeftShankforceZ']
+grf['ground_torque_x'] = forces['LFootContactLeftShanktorqueX']
+grf['ground_torque_y'] = forces['LFootContactLeftShanktorqueY']
+grf['ground_torque_z'] = forces['LFootContactLeftShanktorqueZ']
 
 # Resample at a constant frequency.
 # ---------------------------------
@@ -130,6 +131,8 @@ grf['ground_force_pz'] = copz
 
 dict2storage(grf, 'ground_reaction.mot')
 
+os.system('%s/bin/ik -S ik_setup.xml' % os.environ['OPENSIM_HOME'])
+os.system('%s/bin/id -S id_setup.xml' % os.environ['OPENSIM_HOME'])
 
 
 

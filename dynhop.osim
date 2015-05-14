@@ -382,44 +382,6 @@
 					<!--Slip velocity (creep) at which peak static friction occurs.-->
 					<transition_velocity>0.2</transition_velocity>
 				</HuntCrossleyForce>
-				<HuntCrossleyForce name="LKneeContact">
-					<!--Material properties.-->
-					<HuntCrossleyForce::ContactParametersSet name="contact_parameters">
-						<objects>
-							<HuntCrossleyForce::ContactParameters>
-								<!--Names of geometry objects affected by these parameters.-->
-								<geometry>LKneeContact PlatformContact</geometry>
-								<stiffness>100000</stiffness>
-								<dissipation>1</dissipation>
-								<static_friction>3.8</static_friction>
-								<dynamic_friction>2.4</dynamic_friction>
-								<viscous_friction>0.4</viscous_friction>
-							</HuntCrossleyForce::ContactParameters>
-						</objects>
-						<groups />
-					</HuntCrossleyForce::ContactParametersSet>
-					<!--Slip velocity (creep) at which peak static friction occurs.-->
-					<transition_velocity>0.2</transition_velocity>
-				</HuntCrossleyForce>
-				<HuntCrossleyForce name="LHipContact">
-					<!--Material properties.-->
-					<HuntCrossleyForce::ContactParametersSet name="contact_parameters">
-						<objects>
-							<HuntCrossleyForce::ContactParameters>
-								<!--Names of geometry objects affected by these parameters.-->
-								<geometry>LHipContact PlatformContact</geometry>
-								<stiffness>100000</stiffness>
-								<dissipation>1</dissipation>
-								<static_friction>3.8</static_friction>
-								<dynamic_friction>2.4</dynamic_friction>
-								<viscous_friction>0.4</viscous_friction>
-							</HuntCrossleyForce::ContactParameters>
-						</objects>
-						<groups />
-					</HuntCrossleyForce::ContactParametersSet>
-					<!--Slip velocity (creep) at which peak static friction occurs.-->
-					<transition_velocity>0.2</transition_velocity>
-				</HuntCrossleyForce>
 			</objects>
 			<groups />
 		</ForceSet>
@@ -449,28 +411,6 @@
 					<body_name>LeftShank</body_name>
 					<!--Location of geometry center in the body frame-->
 					<location>0 -0.2 0</location>
-					<!--Orientation of geometry in the body frame-->
-					<orientation>0 0 0</orientation>
-					<!--Display Pref. 0:Hide 1:Wire 3:Flat 4:Shaded-->
-					<display_preference>4</display_preference>
-					<radius>0.05</radius>
-				</ContactSphere>
-				<ContactSphere name="LKneeContact">
-					<!--Body name to connect the contact geometry to-->
-					<body_name>LeftShank</body_name>
-					<!--Location of geometry center in the body frame-->
-					<location>0 0.25 0</location>
-					<!--Orientation of geometry in the body frame-->
-					<orientation>0 0 0</orientation>
-					<!--Display Pref. 0:Hide 1:Wire 3:Flat 4:Shaded-->
-					<display_preference>4</display_preference>
-					<radius>0.05</radius>
-				</ContactSphere>
-				<ContactSphere name="LHipContact">
-					<!--Body name to connect the contact geometry to-->
-					<body_name>Pelvis</body_name>
-					<!--Location of geometry center in the body frame-->
-					<location>0 0 0</location>
 					<!--Orientation of geometry in the body frame-->
 					<orientation>0 0 0</orientation>
 					<!--Display Pref. 0:Hide 1:Wire 3:Flat 4:Shaded-->
