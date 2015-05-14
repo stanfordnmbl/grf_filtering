@@ -33,7 +33,7 @@
 		</defaults>
 		<objects>
 
-            <CMC_Joint name="Pelvis_ty"> <weight>1</weight>
+            <CMC_Joint name="Pelvis_ty"> <weight>30</weight>
                 <coordinate>Pelvis_ty</coordinate> </CMC_Joint>
             <CMC_Joint name="LHip_rz"> <weight>1</weight>
                 <coordinate>LHip_rz</coordinate> </CMC_Joint>
