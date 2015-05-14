@@ -106,8 +106,8 @@ def filt(entry):
     grf[entry] = filter_critically_damped(grf[entry],
             grf_rate, cutoff_frequency, order)
 
-filt('ground_force_vx')
-filt('ground_torque_z')
+#filt('ground_force_vx')
+#filt('ground_torque_z')
 
 
 # Compute center of pressure.
