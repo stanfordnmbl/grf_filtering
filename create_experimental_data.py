@@ -133,6 +133,7 @@ dict2storage(grf, 'ground_reaction.mot')
 
 os.system('%s/bin/ik -S ik_setup.xml' % os.environ['OPENSIM_HOME'])
 os.system('%s/bin/id -S id_setup.xml' % os.environ['OPENSIM_HOME'])
+os.system('%s/bin/rra -S rra_setup.xml' % os.environ['OPENSIM_HOME'])
 
 
 

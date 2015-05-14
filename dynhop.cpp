@@ -31,9 +31,16 @@ int main()
     footkin->setPointName("foot");
     model.addAnalysis(footkin);
 
+    auto* kin = new Kinematics();
+    kin->setName("kinematics");
+    model.addAnalysis(kin);
+
     SimTK::State state = model.initSystem();
 
     model.updMatterSubsystem().setShowDefaultGeometry(true);
+    auto& viz = model.updVisualizer().updSimbodyVisualizer();
+    viz.setMode(Visualizer::RealTime);
+    viz.setRealTimeScale(0.2);
 
     RungeKuttaMersonIntegrator integrator(model.getMultibodySystem());
     integrator.setAccuracy(1e-6);
@@ -46,6 +53,7 @@ int main()
     model.updAnalysisSet().get("pelviskin").printResults("dynhop");
     model.updAnalysisSet().get("kneekin").printResults("dynhop");
     model.updAnalysisSet().get("footkin").printResults("dynhop");
+    model.updAnalysisSet().get("kinematics").printResults("dynhop");
 
     model.updForceSet().setSize(0);
     model.print("dynhop_no_forces.osim");
