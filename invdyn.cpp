@@ -51,14 +51,16 @@ public:
                 m.setStateVariableValue(state, stateNames[istate],
                         statedata[istate - 1]);
             }
+            std::cout << "state " << state.getY() << std::endl;
 
             // Create dudt.
             Vector udot(dudt.getColumnLabels().size() - 1, 0.0);
             // TODO consider leaving out.
             const auto& dudtdata = dudt.getStateVector(i)->getData();
             for (int iu = 0; iu < udot.size(); ++iu) {
-                udot[iu] = dudtdata[iu + 1];
+                udot[iu] = dudtdata[iu];
             }
+            std::cout << "udot " << udot << std::endl;
             /*
             */
 

@@ -24,6 +24,7 @@ target_link_libraries(invdyn "${OpenSim_LIBRARIES}")
 
 configure_file(dynhop.osim "${CMAKE_BINARY_DIR}" COPYONLY)
 configure_file(create_experimental_data.py "${CMAKE_BINARY_DIR}" COPYONLY)
+configure_file(invdyn.py "${CMAKE_BINARY_DIR}" COPYONLY)
 configure_file(id_setup.xml "${CMAKE_BINARY_DIR}" COPYONLY)
 configure_file(invdyn_setup.xml "${CMAKE_BINARY_DIR}" COPYONLY)
 configure_file(ik_setup.xml "${CMAKE_BINARY_DIR}" COPYONLY)
