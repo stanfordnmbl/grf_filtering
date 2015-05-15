@@ -21,10 +21,12 @@ public:
 
     bool run() override {
         Model m(_modelFileName); // TODO use _model.
+        m.updForceSet().clearAndDestroy();
+            /*
         for (int iforce = 0; iforce < m.getForceSet().getSize(); ++iforce)
         { // TODO
-            m.updForceSet().get(iforce).set_isDisabled(true);
         }
+        */
         bool externalLoads = createExternalLoads(
                 _externalLoadsFileName, m, nullptr);
         auto& state = m.initSystem();
@@ -40,7 +42,10 @@ public:
         Array<std::string> stateNames = states.getColumnLabels();
 
         InverseDynamicsSolver idsolver(m);
-        Storage generalizedForces(times.size());
+        Storage generalizedForces_f_v_a(times.size());
+        Storage generalizedForces_f(times.size());
+        Storage generalizedForces_v(times.size());
+        Storage generalizedForces_a(times.size());
         for (int i = 0; i < times.size(); ++i) {
 
             // Create state.
@@ -51,7 +56,6 @@ public:
                 m.setStateVariableValue(state, stateNames[istate],
                         statedata[istate - 1]);
             }
-            std::cout << "state " << state.getY() << std::endl;
 
             // Create dudt.
             Vector udot(dudt.getColumnLabels().size() - 1, 0.0);
@@ -60,18 +64,54 @@ public:
             for (int iu = 0; iu < udot.size(); ++iu) {
                 udot[iu] = dudtdata[iu];
             }
-            std::cout << "udot " << udot << std::endl;
             /*
             */
 
             // Solve.
-            Vector solution = idsolver.solve(state, udot);
-            StateVector solutionVec(statevec->getTime(), solution.size(),
-                    &solution[0]);
-            generalizedForces.append(solutionVec);
+            // f: grf
+            // v: quadratic velocity
+            // a: joint acceleration Mudot
+            for (int iforce = 0; iforce < m.getForceSet().getSize(); ++iforce)
+            {
+                m.getForceSet().get(iforce).setDisabled(state, false);
+            }
+            Vector sol_f_v_a = idsolver.solve(state, udot);
+            Vector sol_f_v = idsolver.solve(state);
+
+            for (int iforce = 0; iforce < m.getForceSet().getSize(); ++iforce)
+            {
+                m.getForceSet().get(iforce).setDisabled(state, true);
+            }
+            Vector sol_v_a = idsolver.solve(state, udot);
+            Vector sol_v = idsolver.solve(state);
+
+            Vector sol_f = sol_f_v - sol_v;
+            Vector sol_a = sol_v_a - sol_v;
+
+            StateVector solVec_f_v_a(statevec->getTime(), sol_f_v_a.size(),
+                    &sol_f_v_a[0]);
+            generalizedForces_f_v_a.append(solVec_f_v_a);
+
+            StateVector solVec_f(statevec->getTime(),
+                    sol_f.size(), &sol_f[0]);
+            generalizedForces_f.append(solVec_f);
+
+            StateVector solVec_v(statevec->getTime(),
+                    sol_v.size(), &sol_v[0]);
+            generalizedForces_v.append(solVec_v);
+
+            StateVector solVec_a(statevec->getTime(),
+                    sol_a.size(), &sol_a[0]);
+            generalizedForces_a.append(solVec_a);
         }
-        generalizedForces.setColumnLabels(dudt.getColumnLabels());
-        generalizedForces.print("invdyn_solution.sto");
+        generalizedForces_f_v_a.setColumnLabels(dudt.getColumnLabels());
+        generalizedForces_f_v_a.print("invdyn_solution.sto");
+        generalizedForces_f.setColumnLabels(dudt.getColumnLabels());
+        generalizedForces_f.print("invdyn_solution_f.sto");
+        generalizedForces_v.setColumnLabels(dudt.getColumnLabels());
+        generalizedForces_v.print("invdyn_solution_v.sto");
+        generalizedForces_a.setColumnLabels(dudt.getColumnLabels());
+        generalizedForces_a.print("invdyn_solution_a.sto");
         return true;
     }
 private:
